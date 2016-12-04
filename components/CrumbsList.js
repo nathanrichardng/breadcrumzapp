@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
+const CrumbResource = require('../resources/CrumbResource');
 const List = require('./List.js');
 
 //These are the components we are using from ReactNative import
@@ -25,19 +26,10 @@ class CrumbsList extends Component {
   }
 
   componentDidMount() {
-      fetch('https://johhnnytest:testing1234@breadcrumz.herokuapp.com/api/crumbs?longitude=-101&lattitude=101', {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        }
-      })
-      .then((response) => response.json())
-      .then((responseData) => {
-        window.alert(JSON.stringify(responseData));
-        this.setState({ crumbs: responseData });
-      }).catch(function (err) {
-        window.alert(err);
+    this.crumbResource = new CrumbResource();
+    this.crumbResource.getCrumbs()
+      .then((crumbs) => {
+        this.setState({ crumbs: crumbs });
       });
   }
 

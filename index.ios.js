@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 const CrumbsList = require('./components/CrumbsList.js');
+const AddCrumbButton = require('./components/AddCrumbButton.js');
 
 export default class breadcrumzapp extends Component {
   render() {
@@ -21,6 +22,7 @@ export default class breadcrumzapp extends Component {
           BreadCrumz
         </Text>
         <CrumbsList />
+        <AddCrumbButton />
       </View>
     );
   }
