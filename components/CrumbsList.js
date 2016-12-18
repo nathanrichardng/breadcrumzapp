@@ -27,14 +27,16 @@ class CrumbsList extends Component {
 
   componentDidMount() {
     this.crumbResource = new CrumbResource();
-    this.crumbResource.getCrumbs(this.props.longitude, this.props.latitude)
+    const coords = this.props.coords;
+    this.crumbResource.getCrumbs(coords.longitude, coords.latitude)
       .then((crumbs) => {
         this.setState({ crumbs: crumbs });
       });
   }
 
   componentWillReceiveProps(nextProps) {
-    this.crumbResource.getCrumbs(nextProps.longitude, nextProps.latitude)
+    const coords = nextProps.coords;
+    this.crumbResource.getCrumbs(coords.longitude, coords.latitude)
       .then((crumbs) => {
         this.setState({ crumbs: crumbs });
       });

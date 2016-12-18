@@ -40,8 +40,8 @@ export default class breadcrumzapp extends Component {
           <Text style={styles.welcome}>
             BreadCrumz
           </Text>
-          <CrumbsList longitude={this.state.coords.longitude} latitude={this.state.coords.latitude}/>
-          <AddCrumbButton />
+          <CrumbsList coords={this.state.coords}/>
+          <AddCrumbButton coords={this.state.coords} />
         </View>
       );
     }

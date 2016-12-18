@@ -8,7 +8,6 @@ import React, { Component } from 'react';
 import ReactNative from 'react-native';
 const CrumbResource = require('../resources/CrumbResource');
 const ModalButton = require('./ModalButton.js');
-const GPS = require('./GPS.js');
 
 //These are the components we are using from ReactNative import
 const {
@@ -43,7 +42,7 @@ class AddCrumbButton extends Component {
 
   _submitComment() {
     if(this.state.comment.trim() == '') { return false; }
-    const coords = this.refs.gps.getPosition().coords;
+    const coords = this.props.coords;
     const crumb = {
       message: this.state.comment,
       longitude: coords.longitude,
@@ -63,7 +62,6 @@ class AddCrumbButton extends Component {
   render() {
     return (
       <ModalButton ref="modal" text="Crumb it!" onSubmit={this.onSubmit}>
-        <GPS ref="gps"/>
         <TextInput
           autoFocus={true}
           onSubmitEditing={this.onSubmit}
