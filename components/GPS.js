@@ -13,7 +13,7 @@ const {
 
 class GPS extends React.Component {
   state = {
-    initialPosition: {coords: {lattitude: 'unknown', longitude: 'unknown'}},
+    initialPosition: {coords: {latitude: 'unknown', longitude: 'unknown'}},
     lastPosition: {coords: {latitude: 'unknown', longitude: 'unknown'}},
   };
 
@@ -54,7 +54,7 @@ GPS.propTypes = {
 }
 
 GPS.defaultProps = {
-  onLocationChange: function() {
+  onLocationChange: function(position) {
     console.log("implement GPS.onLocationChange prop");
     return true;
   }

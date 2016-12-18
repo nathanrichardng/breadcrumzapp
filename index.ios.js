@@ -11,18 +11,52 @@ import {
   Text,
   View
 } from 'react-native';
+const GPS = require('./components/GPS.js');
 const CrumbsList = require('./components/CrumbsList.js');
 const AddCrumbButton = require('./components/AddCrumbButton.js');
 
 export default class breadcrumzapp extends Component {
+  constructor(props) {
+    super(props);
+    this.updateCoords = this.updateCoords.bind(this);
+    this.state = {
+      coords: false,
+      ready: false,
+    } 
+  }
+
+  updateCoords(position) {
+    console.log("updated coords: " + JSON.stringify(position));
+    this.setState({
+      coords: position.coords,
+      ready: true,
+    });
+  }
+
+  renderView() {
+    if(this.state.ready) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            BreadCrumz
+          </Text>
+          <CrumbsList longitude={this.state.coords.longitude} latitude={this.state.coords.latitude}/>
+          <AddCrumbButton />
+        </View>
+      );
+    }
+    else {
+      return (
+        <Text>Loading</Text>
+      );
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          BreadCrumz
-        </Text>
-        <CrumbsList />
-        <AddCrumbButton />
+      <View style={styles.fullWidth}>
+        <GPS onLocationChange={this.updateCoords} />
+        {this.renderView()}
       </View>
     );
   }
@@ -34,6 +68,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  fullWidth: {
+    flex: 1,
   },
   welcome: {
     fontSize: 20,

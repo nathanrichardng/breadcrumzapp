@@ -6,8 +6,8 @@
 
 class CrumbResource {
 
-  getCrumbs() {
-    return fetch('https://johhnnytest:testing1234@breadcrumz.herokuapp.com/api/crumbs?longitude=-101&latitude=101', {
+  getCrumbs(lon, lat) {
+    return fetch(`https://johhnnytest:testing1234@breadcrumz.herokuapp.com/api/crumbs?longitude=${lon}&latitude=${lat}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
