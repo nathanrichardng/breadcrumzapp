@@ -12,6 +12,7 @@ import {
   View
 } from 'react-native';
 const GPS = require('./components/GPS.js');
+const LoginPage = require('./components/LoginPage.js');
 const CrumbsList = require('./components/CrumbsList.js');
 const AddCrumbButton = require('./components/AddCrumbButton.js');
 
@@ -20,6 +21,7 @@ export default class breadcrumzapp extends Component {
     super(props);
     this.updateCoords = this.updateCoords.bind(this);
     this.state = {
+      authenticated: false,
       coords: false,
       ready: false,
     } 
@@ -34,6 +36,13 @@ export default class breadcrumzapp extends Component {
   }
 
   renderView() {
+    // display login page if not authenticated
+    if(!this.state.authenticated) {
+      return (
+        <LoginPage />
+      )
+    }
+    // otherwise load crumbs
     if(this.state.ready) {
       return (
         <View style={styles.container}>
