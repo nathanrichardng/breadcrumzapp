@@ -30,6 +30,7 @@ class CrumbsList extends Component {
     const coords = this.props.coords;
     this.crumbResource.getCrumbs(coords.longitude, coords.latitude)
       .then((crumbs) => {
+        console.log("calling callback now.");
         this.setState({ crumbs: crumbs });
       });
   }

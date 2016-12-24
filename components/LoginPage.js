@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
+const AuthResource = require('../resources/AuthResource.js');
 const Button = require('./Button.js');
 
 //These are the components we are using from ReactNative import
@@ -30,6 +31,10 @@ class LoginPage extends Component {
     }
   }
 
+  componentDidMount() {
+    this.authResource = new AuthResource();
+  }
+
   setUsername(username) {
     this.setState({ username: username });
   }
@@ -42,9 +47,14 @@ class LoginPage extends Component {
     this.refs.password.focus();
   }
 
-  onSubmit() {
+  async onSubmit() {
     console.log("submitted username: " + this.state.username + " password: " + this.state.password);
-    return true;
+    var user = {
+      username: this.state.username,
+      password: this.state.password
+    }
+    var token = this.authResource.register(user);
+    this.props.onAuthentication(token);
   }
 
   render() {
@@ -74,6 +84,10 @@ class LoginPage extends Component {
       </View> 
     )
   }
+}
+
+LoginPage.propTypes = {
+  onAuthentication: React.PropTypes.func.isRequired
 }
 
 const styles = {

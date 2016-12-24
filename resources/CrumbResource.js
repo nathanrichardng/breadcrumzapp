@@ -4,10 +4,17 @@
  * @flow
  */
 
+const AuthResource = require('../resources/AuthResource.js');
+
 class CrumbResource {
 
-  getCrumbs(lon, lat) {
-    return fetch(`https://johhnnytest:testing1234@breadcrumz.herokuapp.com/api/crumbs?longitude=${lon}&latitude=${lat}`, {
+  constructor() {
+    this.authResource = new AuthResource();
+  }
+
+  async getCrumbs(lon, lat) {
+    var token = await this.authResource.getToken();
+    var crumbs = await fetch(`https://breadcrumz.herokuapp.com/api/crumbs?longitude=${lon}&latitude=${lat}&token=${token}`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
@@ -22,16 +29,21 @@ class CrumbResource {
       console.log("Error fetching crumbs: " + err);
       return [];
     });
+
+    return crumbs;
   }
 
-  addCrumb(crumb) {
-    return fetch('https://johhnnytest:testing1234@breadcrumz.herokuapp.com/api/crumbs', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(crumb),
+  async addCrumb(crumb) {
+    var token = await this.authResource.getToken();
+    crumb.token = token;
+    console.log("adding crumb: " + JSON.stringify(crumb));
+    return fetch('https://breadcrumz.herokuapp.com/api/crumbs', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(crumb),
     })
     .then((response) => response.json())
     .then((responseData) => {

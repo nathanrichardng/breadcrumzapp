@@ -20,6 +20,7 @@ export default class breadcrumzapp extends Component {
   constructor(props) {
     super(props);
     this.updateCoords = this.updateCoords.bind(this);
+    this.authenticate = this.authenticate.bind(this);
     this.state = {
       authenticated: false,
       coords: false,
@@ -35,11 +36,19 @@ export default class breadcrumzapp extends Component {
     });
   }
 
+  authenticate(token) {
+    console.log("authenticated with token " + JSON.stringify(token));
+    this.setState({
+      authenticated: true
+    });
+  }
+
   renderView() {
     // display login page if not authenticated
     if(!this.state.authenticated) {
       return (
-        <LoginPage />
+        <LoginPage 
+          onAuthentication={this.authenticate}/>
       )
     }
     // otherwise load crumbs
