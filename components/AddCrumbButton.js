@@ -49,9 +49,11 @@ class AddCrumbButton extends Component {
       latitude: coords.latitude,
     }
     console.log(JSON.stringify(crumb));
-    this.crumbResource.addCrumb(crumb);
+    this.crumbResource.addCrumb(crumb).then(()=>{
+      this.setState({ comment: '' });
+      this.props.onSubmit();
+    });
     //.then(implement notification handler);
-    this.setState({ comment: '' });
   }
 
   onSubmit() {
@@ -85,6 +87,7 @@ const styles = {
   },
   commentText: {
     height: 50, 
+    alignSelf: 'stretch',
     borderColor: 'gray', 
     borderWidth: 1,
   },

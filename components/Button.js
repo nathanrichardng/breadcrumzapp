@@ -30,9 +30,8 @@ class Button extends Component {
 	    return (
 		    <View style={this.props.buttonStyle}>
 		      	<TouchableElement 
-		      		style={styles.submitButton}
 		      		onPress={this.props.onPress}>
-			        <View>
+			        <View style={styles.submitButton}>
 				        <Text style={this.props.textStyle}>{this.props.text}</Text>
 			        </View>
 			    </TouchableElement>  

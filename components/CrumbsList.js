@@ -20,6 +20,7 @@ const {
 class CrumbsList extends Component {
   constructor(props) {
     super(props);
+    this.getCrumbs = this.getCrumbs.bind(this);
     this.state = {
       crumbs: [],
     } 
@@ -28,19 +29,18 @@ class CrumbsList extends Component {
   componentDidMount() {
     this.crumbResource = new CrumbResource();
     const coords = this.props.coords;
-    this.crumbResource.getCrumbs(coords.longitude, coords.latitude)
-      .then((crumbs) => {
-        console.log("calling callback now.");
-        this.setState({ crumbs: crumbs });
-      });
+    this.getCrumbs(coords);
   }
 
   componentWillReceiveProps(nextProps) {
     const coords = nextProps.coords;
-    this.crumbResource.getCrumbs(coords.longitude, coords.latitude)
-      .then((crumbs) => {
-        this.setState({ crumbs: crumbs });
-      });
+    this.getCrumbs(coords);
+  }
+
+  getCrumbs(coords) {
+    this.crumbResource.getCrumbs(coords.longitude, coords.latitude).then((crumbs) => {
+      this.setState({ crumbs: crumbs });
+    });
   }
 
   render() {

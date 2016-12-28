@@ -33,6 +33,11 @@ class LoginPage extends Component {
 
   componentDidMount() {
     this.authResource = new AuthResource();
+    //check if already authenticated with token
+    var token = this.authResource.userValid();
+    if(token) {
+      this.props.onAuthentication(token);
+    }
   }
 
   setUsername(username) {
@@ -113,6 +118,7 @@ const styles = {
     height: 50, 
     borderColor: 'gray', 
     borderWidth: 1,
+    alignSelf: 'stretch',
   },
   textStyle: {
     textAlign: 'center',

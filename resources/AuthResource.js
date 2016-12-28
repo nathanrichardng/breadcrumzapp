@@ -37,7 +37,37 @@ class AuthResource {
 
   getToken() {
     var token = AsyncStorage.getItem(USER_TOKEN);
+    if(token == null) {
+      return false;
+    }
     return token;
+  }
+
+  userValid() {
+    // get token
+    var token = this.getToken();
+    if(!token) { return false; }
+    // check user valid
+    var userValid = fetch(`https://breadcrumz.herokuapp.com/api/authenticate?token=${token}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response.json())
+    .then((responseData) => {
+      console.log("validating user: " + JSON.stringify(responseData));
+      if(responseData.success) {
+        return token;
+      }
+      else {
+        return false;
+      }
+    }).catch(function (err) {
+      console.log("Error vaidating user: " + err);
+      return false;
+    });
   }
 }
 

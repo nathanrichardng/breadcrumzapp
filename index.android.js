@@ -11,21 +11,76 @@ import {
   Text,
   View
 } from 'react-native';
+const GPS = require('./components/GPS.js');
+const LoginPage = require('./components/LoginPage.js');
+const CrumbsList = require('./components/CrumbsList.js');
+const AddCrumbButton = require('./components/AddCrumbButton.js');
 
 export default class breadcrumzapp extends Component {
+  constructor(props) {
+    super(props);
+    this.updateCoords = this.updateCoords.bind(this);
+    this.authenticate = this.authenticate.bind(this);
+    this.updateCrumbs = this.updateCrumbs.bind(this);
+    this.state = {
+      authenticated: false,
+      coords: false,
+      ready: false,
+    } 
+  }
+
+  updateCoords(position) {
+    console.log("updated coords: " + JSON.stringify(position));
+    this.setState({
+      coords: position.coords,
+      ready: true,
+    });
+  }
+
+  authenticate(token) {
+    console.log("authenticated with token " + JSON.stringify(token));
+    this.setState({
+      authenticated: true
+    });
+  }
+
+  updateCrumbs() {
+    const coords = this.state.coords;
+    this.refs.crumbsList.getCrumbs(coords);
+  }
+
+  renderView() {
+    // display login page if not authenticated
+    if(!this.state.authenticated) {
+      return (
+        <LoginPage 
+          onAuthentication={this.authenticate}/>
+      )
+    }
+    // otherwise load crumbs
+    if(this.state.ready) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            BreadCrumz
+          </Text>
+          <CrumbsList coords={this.state.coords} ref="crumbsList"/>
+          <AddCrumbButton coords={this.state.coords} onSubmit={this.updateCrumbs} />
+        </View>
+      );
+    }
+    else {
+      return (
+        <Text>Loading</Text>
+      );
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+      <View style={styles.fullWidth}>
+        <GPS onLocationChange={this.updateCoords} />
+        {this.renderView()}
       </View>
     );
   }
@@ -37,6 +92,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  fullWidth: {
+    flex: 1,
   },
   welcome: {
     fontSize: 20,

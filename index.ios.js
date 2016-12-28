@@ -21,6 +21,7 @@ export default class breadcrumzapp extends Component {
     super(props);
     this.updateCoords = this.updateCoords.bind(this);
     this.authenticate = this.authenticate.bind(this);
+    this.updateCrumbs = this.updateCrumbs.bind(this);
     this.state = {
       authenticated: false,
       coords: false,
@@ -43,6 +44,11 @@ export default class breadcrumzapp extends Component {
     });
   }
 
+  updateCrumbs() {
+    const coords = this.state.coords;
+    this.refs.crumbsList.getCrumbs(coords);
+  }
+
   renderView() {
     // display login page if not authenticated
     if(!this.state.authenticated) {
@@ -58,8 +64,8 @@ export default class breadcrumzapp extends Component {
           <Text style={styles.welcome}>
             BreadCrumz
           </Text>
-          <CrumbsList coords={this.state.coords}/>
-          <AddCrumbButton coords={this.state.coords} />
+          <CrumbsList coords={this.state.coords} ref="crumbsList"/>
+          <AddCrumbButton coords={this.state.coords} onSubmit={this.updateCrumbs} />
         </View>
       );
     }
