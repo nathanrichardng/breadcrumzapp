@@ -7,7 +7,6 @@
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
 const AuthResource = require('../resources/AuthResource.js');
-const Button = require('./Button.js');
 
 //These are the components we are using from ReactNative import
 const {
@@ -15,6 +14,7 @@ const {
   Text,
   TextInput,
   View,
+  Button,
   TouchableHighlight,
 } = ReactNative;
 
@@ -83,10 +83,8 @@ class LoginPage extends Component {
           secureTextEntry={true}
           value={this.state.password} />
         <Button
-          buttonStyle={styles.buttonStyle}
-          textStyle={styles.textStyle}
           onPress={this.onSubmit}
-          text="Submit" />
+          title="Submit" />
       </View> 
     )
   }

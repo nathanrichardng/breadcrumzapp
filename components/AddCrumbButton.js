@@ -63,9 +63,14 @@ class AddCrumbButton extends Component {
 
   render() {
     return (
-      <ModalButton ref="modal" text="Crumb it!" onSubmit={this.onSubmit}>
+      <ModalButton ref="modal" text="Crumb it!" submitText="Submit" onSubmit={this.onSubmit}>
+        <Text style={styles.welcome}>
+          Add Crumb
+        </Text>
         <TextInput
           autoFocus={true}
+          multiline={true}
+          textAlignVertical="top"
           onSubmitEditing={this.onSubmit}
           style={styles.commentText}
           onChangeText={this._setCommentText}
@@ -82,12 +87,16 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
   },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 15,
+  },
   fullWidth: {
     alignSelf: 'stretch',
   },
   commentText: {
-    height: 50, 
-    alignSelf: 'stretch',
+    flex: 1,
     borderColor: 'gray', 
     borderWidth: 1,
   },

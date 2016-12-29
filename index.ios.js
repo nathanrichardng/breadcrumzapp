@@ -30,7 +30,6 @@ export default class breadcrumzapp extends Component {
   }
 
   updateCoords(position) {
-    console.log("updated coords: " + JSON.stringify(position));
     this.setState({
       coords: position.coords,
       ready: true,
@@ -38,7 +37,6 @@ export default class breadcrumzapp extends Component {
   }
 
   authenticate(token) {
-    console.log("authenticated with token " + JSON.stringify(token));
     this.setState({
       authenticated: true
     });
@@ -61,8 +59,8 @@ export default class breadcrumzapp extends Component {
     if(this.state.ready) {
       return (
         <View style={styles.container}>
-          <Text style={styles.welcome}>
-            BreadCrumz
+          <Text>
+            {this.state.coords.longitude}, {this.state.coords.latitude}
           </Text>
           <CrumbsList coords={this.state.coords} ref="crumbsList"/>
           <AddCrumbButton coords={this.state.coords} onSubmit={this.updateCrumbs} />
@@ -80,6 +78,9 @@ export default class breadcrumzapp extends Component {
     return (
       <View style={styles.fullWidth}>
         <GPS onLocationChange={this.updateCoords} />
+        <Text style={styles.welcome}>
+          BreadCrumz
+        </Text>
         {this.renderView()}
       </View>
     );
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 15,
   },
   instructions: {
     textAlign: 'center',

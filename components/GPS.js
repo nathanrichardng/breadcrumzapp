@@ -12,50 +12,40 @@ const {
 } = ReactNative;
 
 class GPS extends React.Component {
-  state = {
-    initialPosition: {coords: {latitude: 'unknown', longitude: 'unknown'}},
-    lastPosition: {coords: {latitude: 'unknown', longitude: 'unknown'}},
-  };
 
-  watchID: ?number = null;
+  constructor(props) {
+    super(props);
+    this.getPosition = this.getPosition.bind(this);
+    this.state = {
+      lastPosition: {coords: {latitude: 'unknown', longitude: 'unknown'}},
+    } 
+  }
 
   componentDidMount() {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        var initialPosition = position;
-        this.setState({initialPosition});
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-
-    // save watch id so it can be cleared on unmount
-    this.watchID = navigator.geolocation.watchPosition(
-      (position) => {
-        var lastPosition = position;
-        this.setState({lastPosition});
-      },
-      (error) => alert(JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 10000, maximumAge: 5000}
-    );
-
-    // save interval id so it can be cleared on unmount
-    // call this in a separate interval from watchPosition to ensure its not called too often
+    // get position
+    this.getPosition();
+    // set interval to update position and save id so it can be cleared on unmount
     this.gpsUpdateInterval = setInterval(() => {
-      this.props.onLocationChange(this.state.lastPosition);
-    }, 5000);
+      //need to use this instead of watchInterval, because the latter doesnt update location as desired.
+      this.getPosition();
+    }, 10000);
 
   }
 
   componentWillUnmount() {
-    // clear geolocation watch
-    navigator.geolocation.clearWatch(this.watchID);
     // clear gps update interval
     clearInterval(this.gpsUpdateInterval);
   }
 
   getPosition() {
-  	return this.state.lastPosition;
+  	navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({ lastPosition: position });
+        this.props.onLocationChange(position);
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
   render() {

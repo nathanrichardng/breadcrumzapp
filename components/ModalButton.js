@@ -6,7 +6,6 @@
 
 import React, { Component } from 'react';
 import ReactNative from 'react-native';
-const Button = require('./Button.js');
 
 //These are the components we are using from ReactNative import
 const {
@@ -15,7 +14,7 @@ const {
   TextInput,
   View,
   Modal,
-  TouchableHighlight,
+  Button,
 } = ReactNative;
 
 class ModalButton extends Component {
@@ -60,17 +59,15 @@ class ModalButton extends Component {
             <View style={styles.container}>
               {this.props.children}
                 <Button 
-                  buttonStyle={this.props.submitButtonStyle}
-                  textStyle={this.props.submitTextStyle}
-                  text={this.props.submitText}
+                  color="steelblue"
+                  title={this.props.submitText}
                   onPress={this._submitModal} />
             </View>
         </Modal>
         <Button
-          buttonStyle={this.props.buttonStyle}
-          textStyle={this.props.textStyle}
+          color="steelblue"
           onPress={this._showModal}
-          text={this.props.text} />
+          title={this.props.text} />
       </View> 
     )
   }
@@ -109,8 +106,8 @@ const styles = {
   container: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'space-between',
+    alignSelf: 'stretch'
   },
   fullWidth: {
     alignSelf: 'stretch',
