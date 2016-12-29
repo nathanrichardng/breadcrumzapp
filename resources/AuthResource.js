@@ -43,12 +43,12 @@ class AuthResource {
     return token;
   }
 
-  userValid() {
+  async userValid() {
     // get token
-    var token = this.getToken();
+    var token = await this.getToken();
     if(!token) { return false; }
     // check user valid
-    var userValid = fetch(`https://breadcrumz.herokuapp.com/api/authenticate?token=${token}`, {
+    return fetch(`https://breadcrumz.herokuapp.com/api/authenticate?token=${token}`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -57,7 +57,6 @@ class AuthResource {
     })
     .then((response) => response.json())
     .then((responseData) => {
-      console.log("validating user: " + JSON.stringify(responseData));
       if(responseData.success) {
         return token;
       }

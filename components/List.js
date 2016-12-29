@@ -23,6 +23,9 @@ class List extends Component {
   }
 
   renderItems() {
+    // quit if no array supplied for list
+    if(!Array.isArray(this.props.items)) { return false; }
+    // otherwise render items
     var titleKey = this.props.titleKey ? this.props.titleKey : 'title';
     var textKey = this.props.textKey ? this.props.textKey : 'text';
     var itemNodes = this.props.items.map(function(item, index) {
@@ -40,6 +43,18 @@ class List extends Component {
       </View>
     )
   }
+}
+
+List.propTypes = {
+  titleKey: React.PropTypes.string,
+  textKey: React.PropTypes.string,
+  items: React.PropTypes.array
+}
+
+List.defaultProps = {
+  titleKey: 'title',
+  textKey: 'text',
+  items: []
 }
 
 const styles = {

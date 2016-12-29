@@ -34,10 +34,11 @@ class LoginPage extends Component {
   componentDidMount() {
     this.authResource = new AuthResource();
     //check if already authenticated with token
-    var token = this.authResource.userValid();
-    if(token) {
-      this.props.onAuthentication(token);
-    }
+    this.authResource.userValid().then((token) => {
+      if(token) {
+        this.props.onAuthentication(token);
+      }
+    });
   }
 
   setUsername(username) {

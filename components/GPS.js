@@ -28,16 +28,30 @@ class GPS extends React.Component {
       (error) => alert(JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
-    this.watchID = navigator.geolocation.watchPosition((position) => {
-      this.props.onLocationChange(position);
-      var lastPosition = position;
-      this.setState({lastPosition});
 
-    });
+    // save watch id so it can be cleared on unmount
+    this.watchID = navigator.geolocation.watchPosition(
+      (position) => {
+        var lastPosition = position;
+        this.setState({lastPosition});
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 10000, maximumAge: 5000}
+    );
+
+    // save interval id so it can be cleared on unmount
+    // call this in a separate interval from watchPosition to ensure its not called too often
+    this.gpsUpdateInterval = setInterval(() => {
+      this.props.onLocationChange(this.state.lastPosition);
+    }, 5000);
+
   }
 
   componentWillUnmount() {
+    // clear geolocation watch
     navigator.geolocation.clearWatch(this.watchID);
+    // clear gps update interval
+    clearInterval(this.gpsUpdateInterval);
   }
 
   getPosition() {

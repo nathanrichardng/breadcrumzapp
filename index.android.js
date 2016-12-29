@@ -64,6 +64,9 @@ export default class breadcrumzapp extends Component {
           <Text style={styles.welcome}>
             BreadCrumz
           </Text>
+          <Text>
+            {this.state.coords.longitude}, {this.state.coords.latitude}
+          </Text>
           <CrumbsList coords={this.state.coords} ref="crumbsList"/>
           <AddCrumbButton coords={this.state.coords} onSubmit={this.updateCrumbs} />
         </View>
